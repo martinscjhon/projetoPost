@@ -50,9 +50,9 @@ export default {
       user: {}
     }
   },
-  async created(){
+  created(){
     const user = localStorage.getItem("@projeto-post");
-    this.user = user;
+    this.user = JSON.parse(user);
   },
   methods: {
     async createPost(){
@@ -65,11 +65,12 @@ export default {
         created: new Date(), //data da criação do post
         content: this.mensagem,
         autor: this.user.nome,
-        uid: this.user.uid,
+        userId: this.user.uid,
         like: 0
       })
       .then(() => {
         this.mensagem = "";
+        console.log("POST ENVIADO COM SUCESSO")
       })
       .catch((error) => {
         console.log("ERROR: " + error)
