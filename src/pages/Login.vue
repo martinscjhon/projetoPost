@@ -22,7 +22,6 @@
       <a @click="toggleBtn">Criar uma conta</a>
     </div>
 
-
     <div class="loginArea" v-else>
       <h1>Cadastrar</h1>
       <form @submit.prevent="handleRegister">
@@ -91,7 +90,7 @@ export default {
       await localStorage.setItem("@projeto-post", JSON.stringify(usuarioLogado))
     })
     .catch((error) => {
-      console.log("ERRO: " + error)
+      console.log(error)
     })
 
     this.$router.push("/")
