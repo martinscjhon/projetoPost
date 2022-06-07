@@ -18,9 +18,11 @@
     <div class="postarea" v-else>
       <article class="post" v-for="post in posts" :key="post.id">
         <h1>{{post.autor}}</h1>
-        <p>{{post.content}}</p>
+        <p>
+          {{post.content.length < 200 ? post.content : post.content.substring(0,150) + "..."}}
+        </p>
         <div class="action-post">
-          <button>
+          <button @click="likePost(post.id, post.like)">
             {{post.like === 0 ? "curtir" : post.like + " curtidas"}}
           </button>
           <button>Veja post completo</button>
@@ -48,6 +50,7 @@ export default {
     this.user = JSON.parse(user);
 
     await firebase.firestore().collection('posts')
+    .orderBy('created', 'desc')
     .onSnapshot((doc) => {
       this.posts = [];
 
@@ -85,15 +88,42 @@ export default {
           .catch((error) => {
           console.log("ERROR: " + error);
       });
-    }
-  },
-  filters:{
-    postLength(valor){
-      if(valor.length < 200){
-        return valor;
+    },
+    async likkePost(id, like){
+      const userId = this.user.uid;
+      const docId = `${userId}_${id}`
+
+      // checando se o post já foi curtindo - aula 96
+      const doc = await firebase.firestore().collection('likes')
+      .doc(docId)
+      .get()
+
+      if(doc.exists){
+        await firebase.firestore().collection('posts')
+        .doc(id)
+        .update({
+          like: like - 1
+        })
+
+
+        await firebase.firestore().collection('likes')
+        .doc(docId).delete();
+
+        return;
       }
 
-      return `${valor.substring(0,200)}...`
+      await firebase.firestore().collection('likes')
+      .doc(docId).set({
+        postId: id,
+        userId: userId
+      })
+
+      // criando o like
+      await firebase.firestore().collection('posts')
+      .doc(id).update({
+        like: like + 1
+      })
+
     }
   }
 }

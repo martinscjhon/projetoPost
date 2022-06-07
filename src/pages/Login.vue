@@ -131,7 +131,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 5rem 4rem;
+    padding: 3rem 2rem;
     min-width: 20%;
     background-color: #4c5059;
     border-radius: 15px;
@@ -154,7 +154,7 @@ export default {
   }
 
   form{
-    width: 100%;
+    width: 80%;
     display: flex;
     flex-direction: column;
   }
