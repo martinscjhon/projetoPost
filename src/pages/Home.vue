@@ -12,12 +12,12 @@
     </div>
 
     <div class="postarea loading" v-if="loading">
-      <h2>Buscando todos os posts...</h2>
+      <h2>Buscando todos os posts...</h2  >
     </div>
 
     <div class="postarea" v-else>
       <article class="post" v-for="post in posts" :key="post.id">
-        <h1>{{post.autor}}</h1>
+        <router-link :to="`/perfil/${post.userId}`" class="titleAutor">{{post.autor}}</router-link>
         <p>
           {{post.content.length < 200 ? post.content : post.content.substring(0,150) + "..."}}
         </p>
@@ -25,24 +25,37 @@
           <button @click="likePost(post.id, post.like)">
             {{post.like === 0 ? "curtir" : post.like + " curtidas"}}
           </button>
-          <button>Veja post completo</button>
+          <button @click="togglePostModal(post)">Veja post completo</button>
         </div>
       </article>
     </div>
+
+    <Modal
+      v-if="showPostModal"
+      :post="fullPost"
+      @close="togglePostModal()"
+    >
+    </Modal>
   </div>
 </template>
 
 <script>
+import Modal from '../components/Modal';
 import firebase from '../services/firebaseConnection';
 
 export default {
   name: "HomeComponent",
+  components:{
+    Modal
+  },
   data() {
     return {
       mensagem: "",
       user: {},
       loading: true,
       posts: [],
+      showPostModal: false,
+      fullPost: {}
     };
   },
   async created() {
@@ -50,7 +63,7 @@ export default {
     this.user = JSON.parse(user);
 
     await firebase.firestore().collection('posts')
-    .orderBy('created', 'desc')
+    .orderBy('created', 'desc') //ordem (qual atributo do banco, qual ordem)
     .onSnapshot((doc) => {
       this.posts = [];
 
@@ -123,7 +136,15 @@ export default {
       .doc(id).update({
         like: like + 1
       })
+    },
+    togglePostModal(post){
+      this.showPostModal = !this.showPostModal;
 
+      if(this.showPostModal){
+        this.fullPost = post;
+      }else {
+        this.fullPost = {}
+      }
     }
   }
 }
@@ -138,6 +159,12 @@ export default {
     justify-content: center;
     margin-top: 25px;
     height: calc(90vh - 60px)
+  }
+
+  .titleAutor{
+    color: #fff;
+    text-decoration: none;
+    font: 500 1.5rem "Poppins";
   }
 
   @import url('../styles/home.css');

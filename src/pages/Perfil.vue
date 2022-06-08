@@ -6,7 +6,8 @@
 
 <script>
 export default {
-  name: "PerfilComponent"
+  name: "PerfilComponent",
+  props:['id']
 }
 </script>
 
