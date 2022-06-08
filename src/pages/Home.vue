@@ -17,9 +17,9 @@
 
     <div class="postarea" v-else>
       <article class="post" v-for="post in posts" :key="post.id">
-        <router-link :to="`/perfil/${post.userId}`" class="titleAutor">{{post.autor}}</router-link>
+        <router-link :to="`/perfil/${post.userId}`">{{post.autor}}</router-link>
         <p>
-          {{post.content.length < 200 ? post.content : post.content.substring(0,150) + "..."}}
+          {{post.content.length < 200 ? post.content : post.content.substring(0,180) + "..."}}
         </p>
         <div class="action-post">
           <button @click="likePost(post.id, post.like)">
@@ -159,12 +159,6 @@ export default {
     justify-content: center;
     margin-top: 25px;
     height: calc(90vh - 60px)
-  }
-
-  .titleAutor{
-    color: #fff;
-    text-decoration: none;
-    font: 500 1.5rem "Poppins";
   }
 
   @import url('../styles/home.css');

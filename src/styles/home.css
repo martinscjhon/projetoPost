@@ -68,6 +68,9 @@
 
 .post a{
     cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    font: 500 1.5rem "Poppins";
 }
 
 .post div{
@@ -119,4 +122,9 @@
 }
 .headerPerfil span strong{
     color: #FFB800;
+}
+
+.overflow{
+  overflow-y: scroll;
+  max-height: 520px;
 }

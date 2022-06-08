@@ -135,6 +135,7 @@ export default {
     min-width: 20%;
     background-color: #4c5059;
     border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
   }
 
   h1{
