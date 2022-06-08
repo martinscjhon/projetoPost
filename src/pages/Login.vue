@@ -88,14 +88,21 @@ export default {
       }
 
       await localStorage.setItem("@projeto-post", JSON.stringify(usuarioLogado))
+
     })
-    .catch((error) => {
-      console.log(error)
+    .catch( () => {
+      alert('Erro ao cadastrar')
     })
 
     this.$router.push("/")
   },
     async handleSubmit(){
+    if(this.email === ""){
+      alert('Favor digite um e-mail!')
+    } else if(this.senha === "" ) {
+      alert('Favor digite uma senha!')
+    }
+
     const {user} = await firebase.auth().signInWithEmailAndPassword(this.email, this.senha)
 
     const userProfile = await firebase.firestore().collection('users')
@@ -171,11 +178,7 @@ export default {
   }
 
   input::placeholder{
-    color: rgb(0, 0, 0);
-  }
-
-  input:focus::placeholder{
-    color: rgb(136, 136, 136);
+    color: rgb(116, 116, 116);
   }
 
   button{
