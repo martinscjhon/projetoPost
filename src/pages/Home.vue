@@ -89,7 +89,7 @@ export default {
           console.log("ERROR: " + error);
       });
     },
-    async likkePost(id, like){
+    async likePost(id, like){
       const userId = this.user.uid;
       const docId = `${userId}_${id}`
 
